@@ -1,0 +1,28 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.njit</groupId>
+    <artifactId>tiantian_parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>tiantian_webrtc</artifactId>
+  <packaging>pom</packaging>
+    <build>
+   
+  	<plugins>
+  		<plugin>
+  		
+  		<groupId>org.apache.tomcat.maven</groupId>
+		<artifactId>tomcat7-maven-plugin</artifactId>
+		<configuration>
+			<path>/</path>
+			<port>9001</port>
+		</configuration>
+		</plugin>
+  	</plugins>
+  </build>
+    <modules>
+    	<module>tiantian_webrtc_interface</module>
+    	<module>tiantian_webrtc_service</module>
+    </modules>
+</project>

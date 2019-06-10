@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+        http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+  <!-- 配置数据源 -->
+<!-- <context:property-placeholder location="classpath:resource/sms.properties"/> -->
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+                <property name="supportedMediaTypes" value="application/json;charset=utf-8"/>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+ <!-- 配置注解驱动 -->
+ <!--
+<mvc:annotation-driven></mvc:annotation-driven> -->
+<!-- 视图解析器 -->
+<bean
+	class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+<!-- 配置nultipartresolver,注意：id名必须这样写，不然会报错 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="UTF-8"></property>
+        <property name="maxInMemorySize" value="10240000"></property>
+    </bean>
+	<!-- 包扫描器 ,@controller-->
+<context:component-scan base-package="com.tiantian.portal.controller"></context:component-scan>
+
+<!-- RtcVideo controller /WebSocket -->
+<bean id="rtcVideo" class="com.tiantian.vedio.RtcVideo"></bean>
+
+<mvc:resources mapping="/css/**" location="/WEB-INF/css/"/>
+    <mvc:resources mapping="/js/**" location="/WEB-INF/js/"/>
+    <mvc:resources mapping="/images/**" location="/WEB-INF/images/"/>
+     <mvc:resources mapping="/headIcons/**" location="/headIcons/"/>
+    <mvc:resources mapping="/fonts/**" location="/WEB-INF/fonts/"/>
+    <mvc:resources mapping="/iconfont/**" location="/WEB-INF/iconfont/"/>
+    <mvc:resources mapping="/layer/**" location="/WEB-INF/layer/"/>
+    <mvc:resources mapping="/sound/**" location="/WEB-INF/sound/"/>
+<!--  引用dubbo服务 -->
+
+<dubbo:application name="tiantian-portal-web"/>
+	<dubbo:registry protocol="zookeeper" address="zookeeper://192.168.182.128:2181?backup=192.168.182.131:2181,192.168.182.132:2181"/>	
+	       <dubbo:reference check="false" interface="com.tiantian.service.UserService" id="userService" />    
+	        <dubbo:reference check="false" interface="com.tiantian.service.FriendsService" id="friendsService" />         
+	        <dubbo:reference check="false"   interface="com.tiantian.service.MessageService" id="messageService"/>        
+	         <dubbo:reference check="false"   interface="com.tiantian.service.InformService" id="informService"/>      
+	         <dubbo:reference check="false"   interface="com.tiantian.service.BlackService" id="blackService"/>            
+	         <dubbo:reference check="false"   interface="com.tiantian.service.SmsService" id="smsService"/>      
+</beans>

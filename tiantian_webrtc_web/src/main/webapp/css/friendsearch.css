@@ -1,0 +1,45 @@
+/* 样式较少，为方便写在这里 */
+		#wrapper {
+			width: 960px;
+			height: 400px;
+			margin: 30px auto;
+		}
+		.search {
+			width: 494px;
+			height: 30px;
+			border: 3px solid #E4393C;
+			position: relative;
+		}
+		.search input {
+			float: left;
+			border: 0;
+		}
+		input:focus {
+			outline: 0;
+		}
+		.text {
+			float: left;
+			width: 406px;
+			padding: 5px;
+			height: 20px;
+			line-height: 20px;
+			font-family: arial,"\5b8b\4f53";
+		}
+		.text:focus {
+			background-color: #FCFCFC;
+			-webkit-box-shadow: 2px 2px 3px #D2D2D2 inset;
+			-moz-box-shadow: 2px 2px 3px #D2D2D2 inset;
+			box-shadow: 2px 2px 3px #D2D2D2 inset;
+		}
+		.button {
+			width: 82px;
+			height: 24px;
+			font-size: 14px;
+			font-weight: 700;
+			color: #FFFFFF;
+			background-color: #E4393C;
+			display: inline-block;
+			text-align: center;
+			cursor: pointer;
+			padding-right: 0px;
+		}

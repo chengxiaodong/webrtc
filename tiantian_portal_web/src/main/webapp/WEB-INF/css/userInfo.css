@@ -1,0 +1,32 @@
+#tb>td{
+	border-width: 0px;
+}
+.panel-heading>.roundImage{
+	width: 200px;
+	height: 200px;
+	background: #ffffff;
+	box-shadow:0px 0px 8px 5px #ccc;
+}
+.panel-heading>.aWrapper{
+	margin-top: 15px;
+}
+.panel-heading>.aWrapper>#updateHeadIcon{
+	margin-bottom: 0px;
+	height: 200px;
+}
+.panel-heading>.chooseHeadIcon{
+	display: none;
+}
+.a_text{
+	color: blue;
+}
+a:hover{
+	cursor: pointer;
+}
+input{
+	border-radius: 5px;
+	border-color: #8000ff;
+}
+.updateRow{
+	display:none;
+}

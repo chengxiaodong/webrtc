@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+	http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.2.xsd">
+	<context:property-placeholder location="classpath:*.properties"/>
+	<!-- 扫描@service注解 -->
+	<context:component-scan base-package="com.tiantian.service"></context:component-scan>
+	
+	
+		<!-- constructor-arg不能使用property-placeholder注入ip,port -->
+	<bean id="jedisCluster" class="redis.clients.jedis.JedisCluster">
+		<constructor-arg name="nodes">
+			<set>
+				<bean class="redis.clients.jedis.HostAndPort">
+					<constructor-arg name="host" value="192.168.182.128"/>
+					<constructor-arg name="port" value="7001"/>
+				</bean>
+				<bean class="redis.clients.jedis.HostAndPort">
+					<constructor-arg name="host" value="192.168.182.128"></constructor-arg>
+					<constructor-arg name="port" value="7002"></constructor-arg>
+				</bean>
+				<bean class="redis.clients.jedis.HostAndPort">
+					<constructor-arg name="host" value="192.168.182.128"></constructor-arg>
+					<constructor-arg name="port" value="7003"></constructor-arg>
+				</bean>
+				<bean class="redis.clients.jedis.HostAndPort">
+					<constructor-arg name="host" value="192.168.182.128"></constructor-arg>
+					<constructor-arg name="port" value="7004"></constructor-arg>
+				</bean>
+				<bean class="redis.clients.jedis.HostAndPort">
+					<constructor-arg name="host" value="192.168.182.128"></constructor-arg>
+					<constructor-arg name="port" value="7005"></constructor-arg>
+				</bean>
+				<bean class="redis.clients.jedis.HostAndPort">
+					<constructor-arg name="host" value="192.168.182.128"></constructor-arg>
+					<constructor-arg name="port" value="7006"></constructor-arg>
+				</bean>
+			</set>
+		</constructor-arg>
+	</bean>
+	<!--redis配置   由于jedisCluster集群情况下不能做集合运算所以只能使用单机版的redis完成-->
+	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxIdle" value="${redis.maxIdle}"/>
+		<property name="maxWaitMillis" value="${redis.maxWait}"/>
+		<property name="testOnBorrow" value="${reids.testOnBorrow}"/>
+		<property name="maxTotal" value="${redis.maxActive}"/>
+	</bean> 
+<!-- 使用连接池 -->
+	<bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+		<constructor-arg name="poolConfig" ref="jedisPoolConfig"></constructor-arg>
+		<constructor-arg name="host" value="${redis.host}"></constructor-arg>
+		<constructor-arg name="port" value="${redis.port}"></constructor-arg>
+	</bean>
+	
+	
+		<!-- 发布dubbo服务 -->
+	<!-- 提供方应用信息，用于计算依赖关系 -->
+	<dubbo:application name="tiantian-webrtc-service" />
+	<!-- 注册中心的地址 -->
+	<dubbo:registry protocol="zookeeper" address="zookeeper://192.168.182.128:2181?backup=192.168.182.131:2181,192.168.182.136:2181" />
+	<!-- 用dubbo协议在20880端口暴露服务 -->
+	<dubbo:protocol name="dubbo" port="30880" />
+	<!-- 声明需要暴露的服务接口 -->                                 
+	<dubbo:service retries="0" timeout="300000" interface="com.tiantian.service.UserService" ref="userServiceImpl"/>
+	<dubbo:service retries="0" timeout="300000" interface="com.tiantian.service.FriendsService" ref="friendsServiceImpl"/>
+	<dubbo:service retries="0" timeout="300000" interface="com.tiantian.service.MessageService" ref="messageServiceImpl"/>
+	<dubbo:service retries="0" timeout="300000" interface="com.tiantian.service.InformService" ref="informServiceImpl"/>
+	<dubbo:service retries="0" timeout="300000" interface="com.tiantian.service.BlackService" ref="blackServiceImpl"/>
+	<dubbo:service retries="0" timeout="300000" interface="com.tiantian.service.SmsService" ref="smsServiceImpl"/>
+</beans>	
